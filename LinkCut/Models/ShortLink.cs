@@ -6,7 +6,7 @@
         
         // Link provided by client
         public Uri OriginalLink { get; set; }
-      
+        // Short version of OriginalLink
         public string OriginalLinkId { get; set; }
     }
 }
