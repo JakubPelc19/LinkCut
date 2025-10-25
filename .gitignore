@@ -14,6 +14,9 @@
 appsettings.json
 appsettings.Development.json
 
+#EF Core Migrations folder
+Migrations/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
