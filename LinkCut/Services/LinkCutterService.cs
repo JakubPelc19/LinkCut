@@ -23,7 +23,7 @@ namespace LinkCut.Services
 
             if (existentShortLink is not null)
             {
-                response.Message = "ShortLink found";
+                response.Message = "Short link found";
 
                 response.StatusCode = StatusCodes.Status200OK;
 
@@ -45,7 +45,7 @@ namespace LinkCut.Services
 
             await _context.SaveChangesAsync();
 
-            response.Message = "ShortLink was created successfully";
+            response.Message = "Short link was created successfully";
 
             response.StatusCode = StatusCodes.Status201Created;
 
@@ -65,7 +65,6 @@ namespace LinkCut.Services
             ServiceResponse<ShortLink> response = new ServiceResponse<ShortLink>();
 
             // Checks errors, if it finds any then it will return true
-
             if (CheckErrsOrignalLinkId(trimmedOriginalLinkId, response))
                 return response;
 
@@ -73,13 +72,13 @@ namespace LinkCut.Services
 
             if (shortlink is null)
             {
-                response.Message = "ShortLink with this ID doesn't exist";
+                response.Message = "Short link with this ID doesn't exist";
                 response.StatusCode = StatusCodes.Status404NotFound;
 
                 return response;
             }
 
-            response.Message = "ShortLink found, client can redirect to OriginalLink";
+            response.Message = "Short link found, client can redirect to the original source";
 
             response.StatusCode = StatusCodes.Status301MovedPermanently;
             response.IsSuccessful = true;
@@ -118,7 +117,7 @@ namespace LinkCut.Services
         {
             if (originalLinkId == string.Empty || originalLinkId.Length != 6)
             {
-                response.Message = "OriginalLinkId cant be empty must be 6 chars long";
+                response.Message = "ID can't be empty must be 6 chars long";
                 response.StatusCode = StatusCodes.Status400BadRequest;
 
                 return true;
@@ -126,7 +125,7 @@ namespace LinkCut.Services
 
             if (originalLinkId.ToLowerInvariant() != originalLinkId)
             {
-                response.Message = "OriginalLinkId must be lowercase";
+                response.Message = "ID must be lowercase";
                 response.StatusCode = StatusCodes.Status400BadRequest;
 
                 return true;
