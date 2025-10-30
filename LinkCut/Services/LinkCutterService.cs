@@ -13,7 +13,8 @@ namespace LinkCut.Services
             
             ServiceResponse<ShortLink> response = new ServiceResponse<ShortLink>();
             
-            if (CheckErrs(trimmedOriginalLink, response))
+            // Checks errors, if it finds any then it will return true
+            if (CheckErrsLink(trimmedOriginalLink, response))
                 return response;
 
             // Checks if ShortLink for OriginalLink already exists
@@ -57,7 +58,39 @@ namespace LinkCut.Services
             
         }
 
-        private bool CheckErrs(string originalLink, ServiceResponse<ShortLink> response)
+        public async Task<ServiceResponse<ShortLink>> GetOriginalLinkFromShortLink(string originalLinkId)
+        {
+            string trimmedOriginalLinkId = originalLinkId.Trim();
+
+            ServiceResponse<ShortLink> response = new ServiceResponse<ShortLink>();
+
+            // Checks errors, if it finds any then it will return true
+
+            if (CheckErrsOrignalLinkId(trimmedOriginalLinkId, response))
+                return response;
+
+            var shortlink = await _context.ShortLinks.FirstOrDefaultAsync(s => s.OriginalLinkId == originalLinkId);
+
+            if (shortlink is null)
+            {
+                response.Message = "ShortLink with this ID doesn't exist";
+                response.StatusCode = StatusCodes.Status404NotFound;
+
+                return response;
+            }
+
+            response.Message = "ShortLink found, client can redirect to OriginalLink";
+
+            response.StatusCode = StatusCodes.Status301MovedPermanently;
+            response.IsSuccessful = true;
+            response.Data = shortlink;
+
+            return response;
+
+        }
+
+
+        private bool CheckErrsLink(string originalLink, ServiceResponse<ShortLink> response)
         {
             if (originalLink == string.Empty)
             {
@@ -78,6 +111,27 @@ namespace LinkCut.Services
                 return true;
             }
             
+            return false;
+        }
+
+        private bool CheckErrsOrignalLinkId(string originalLinkId, ServiceResponse<ShortLink> response)
+        {
+            if (originalLinkId == string.Empty || originalLinkId.Length != 6)
+            {
+                response.Message = "OriginalLinkId cant be empty must be 6 chars long";
+                response.StatusCode = StatusCodes.Status400BadRequest;
+
+                return true;
+            }
+
+            if (originalLinkId.ToLowerInvariant() != originalLinkId)
+            {
+                response.Message = "OriginalLinkId must be lowercase";
+                response.StatusCode = StatusCodes.Status400BadRequest;
+
+                return true;
+            }
+
             return false;
         }
 
