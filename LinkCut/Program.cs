@@ -1,4 +1,5 @@
 using LinkCut.Data;
+using LinkCut.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<ILinkCutterService, LinkCutterService>();
 
 var app = builder.Build();
 
