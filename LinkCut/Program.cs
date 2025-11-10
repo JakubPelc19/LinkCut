@@ -4,9 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
-// TODO:
-// Zmìnit validaci Uri a zmìnit Uri na string
-// Implementovat rate API limit
 // Add services to the container.
 
 
