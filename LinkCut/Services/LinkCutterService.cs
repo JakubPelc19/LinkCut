@@ -117,7 +117,7 @@ namespace LinkCut.Services
         {
             if (originalLinkId == string.Empty || originalLinkId.Length != 6)
             {
-                response.Message = "ID can't be empty must be 6 chars long";
+                response.Message = "ID can't be empty and must be 6 chars long";
                 response.StatusCode = StatusCodes.Status400BadRequest;
 
                 return true;

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LinkCut.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251025151740_IntitalCreate")]
+    [Migration("20251106161759_IntitalCreate")]
     partial class IntitalCreate
     {
         /// <inheritdoc />

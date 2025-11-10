@@ -3,19 +3,12 @@ using LinkCut.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 var builder = WebApplication.CreateBuilder(args);
-
+// TODO:
+// Zmìnit validaci Uri a zmìnit Uri na string
+// Implementovat rate API limit
 // Add services to the container.
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:3000").WithHeaders("Content-Type").WithMethods("GET", "POST");
-        });
-});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -35,8 +28,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 
