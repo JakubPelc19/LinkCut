@@ -1,6 +1,7 @@
 ﻿using LinkCut.Data;
 using LinkCut.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace LinkCut.Services
 {
@@ -19,7 +20,7 @@ namespace LinkCut.Services
 
             // Checks if ShortLink for OriginalLink already exists
             // if it does then it won't generate new ShortLink, but it will return the ShortLink that already exists in DB
-            var existentShortLink = await _context.ShortLinks.FirstOrDefaultAsync(s => s.OriginalLink == new Uri(trimmedOriginalLink));
+            var existentShortLink = await _context.ShortLinks.FirstOrDefaultAsync(s => s.OriginalLink == trimmedOriginalLink);
 
             if (existentShortLink is not null)
             {
@@ -38,7 +39,7 @@ namespace LinkCut.Services
 
             ShortLink link = new ShortLink();
 
-            link.OriginalLink = new Uri(trimmedOriginalLink);
+            link.OriginalLink = trimmedOriginalLink;
             link.OriginalLinkId = await GenerateOriginalLinkId();
 
             await _context.ShortLinks.AddAsync(link);
@@ -99,16 +100,18 @@ namespace LinkCut.Services
             }
 
             // Checks if Url has valid format
-            try
-            {
-                Uri testUri = new Uri(originalLink);
-            }
-            catch
+
+            Regex urlValidFormatRgx = new Regex("^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$");
+            
+            if(!urlValidFormatRgx.IsMatch(originalLink))
             {
                 response.Message = "Invalid format of link";
                 response.StatusCode = StatusCodes.Status400BadRequest;
                 return true;
             }
+            
+            
+            
             
             return false;
         }
