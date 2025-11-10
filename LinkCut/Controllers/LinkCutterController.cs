@@ -10,6 +10,7 @@ namespace LinkCut.Controllers
     [ApiController]
     public class LinkCutterController(ILinkCutterService _linkCutterService) : ControllerBase
     {
+        heheh
         [HttpPost("createshortlink")]
         public async Task<ActionResult<ServiceResponse<ShortLink>>> CreateShortLink(LinkFromClient request)
         {
