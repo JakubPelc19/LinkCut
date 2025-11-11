@@ -2,10 +2,29 @@ using LinkCut.Data;
 using LinkCut.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using System.Threading.RateLimiting;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+
+builder.Services.AddRateLimiter(options => {
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+
+        RateLimitPartition.GetSlidingWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new SlidingWindowRateLimiterOptions
+            {
+                PermitLimit = 20,
+                Window = TimeSpan.FromMinutes(1),
+                SegmentsPerWindow = 2,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 2
+            })
+    );
+
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    });
 
 builder.Services.AddCors(options =>
 {
@@ -50,6 +69,8 @@ app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
+
+app.UseRateLimiter();
 
 app.MapControllers();
 
