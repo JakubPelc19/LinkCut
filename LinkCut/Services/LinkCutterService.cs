@@ -81,7 +81,7 @@ namespace LinkCut.Services
 
             response.Message = "Short link found, client can redirect to the original source";
 
-            response.StatusCode = StatusCodes.Status301MovedPermanently;
+            response.StatusCode = StatusCodes.Status308PermanentRedirect;
             response.IsSuccessful = true;
             response.Data = shortlink;
 

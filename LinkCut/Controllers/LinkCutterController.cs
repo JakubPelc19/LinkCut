@@ -18,7 +18,7 @@ namespace LinkCut.Controllers
             return StatusCode(createShortLinkResponse.StatusCode, createShortLinkResponse);
         }
 
-        [HttpGet("getoriginalink/{originalLinkId}")]
+        [HttpGet("getoriginallink/{originalLinkId}")]
         public async Task<ActionResult<ServiceResponse<ShortLink>>> GetOriginalLinkFromShortLink(string originalLinkId)
         {
             var getOriginalLinkFromShortLinkResponse = await _linkCutterService.GetOriginalLinkFromShortLink(originalLinkId);
