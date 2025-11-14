@@ -105,4 +105,4 @@ dotnet ef database update
 }
 ```
 
-- Frontend může redirectonout na `originalLinkId`
+- Frontend can redirect to `originalLink`
