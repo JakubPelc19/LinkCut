@@ -1,12 +1,12 @@
 # LinkCut
 
-LinkCut API je jednoduchá a rychlá REST API služba určená ke zkracování URL adres. Umožňuje vývojářům snadno generovat krátké odkazy, přesměrovávat uživatele na původní cílové URL a spravovat vytvořené záznamy. API je postavené na ASP.NET Core Web API (C#) a jako databázi využívá PostgreSQL.
+LinkCut API is a simple and fast REST API service designed for shortening URLs. It allows developers to easily generate short links, redirect users to the original target URL on the frontend: https://github.com/JakubPelc19/LinkCut-frontend. The API is built using ASP.NET Core Web API (C#) and uses PostgreSQL as its database.
 
-## Požadavky
+## Requirements
 - .NET 9
 - PostgreSQL
-- appsettings.json s ConnectionStringem
-- AllowedOrigins v  appsettings.json
+- appsettings.json with ConnectionString
+- AllowedOrigins in appsettings.json
 
 ## Tech Stack
 - C#
@@ -15,9 +15,9 @@ LinkCut API je jednoduchá a rychlá REST API služba určená ke zkracování U
 - PostgreSQL
 
 ## Setup
-- Naklokujte repozitář přes git clone:
+- Clone the repo:
 `git clone https://github.com/JakubPelc19/LinkCut`
-- Vytvořte appsettings.json v adresáři LinkCut:
+- Create appsettings.json in root of the repo:
 ```json
 
 {
@@ -38,30 +38,30 @@ LinkCut API je jednoduchá a rychlá REST API služba určená ke zkracování U
 }
 ```
 
-- Do AllowedOrigins přidejte všechny své frontendy, které chcete přípojit (oddělujte ';'):
+- Add your frontends origins to `AllowedOrigins` variable inside your appsettings.json (multiple origins seperate with `;`):
 ```json
 "AllowedOrigins": "http://localhost:3000;http://localhost:1000"
 ```
-- Taktéž může zůstat prázdný:
+- You can also leave it empty:
 ```json
   "AllowedOrigins": ""
 ```
 
-- V adresáři LinkCut použíjte nástroj `dotnet ef`:
-- Nejprve vytvoře migrace:
+- Use `dotnet ef` tool in LinkCut directory:
+- Create migration:
 ```bash
 dotnet ef migrations add InitialCreate
 ```
-poté tuto migraci aplikujte:
+Then apply this migration:
 ```bash
 dotnet ef database update
 ```
 
-- A nyní můžete spustit :)
+- And that's it :)
 
-## Vytvoření krátkého odkazu
+## ShortLink creation
 
-- Na tento odkaz pošlete tento požadavek `https://<your-address>/api/LinkCutter/createshortlink`:
+- Send this request on this link `https://<your-address>/api/LinkCutter/createshortlink`:
 ```json
 {
   "method": "POST",
@@ -75,7 +75,7 @@ dotnet ef database update
 }
 ```
 
-- Jako odpověď Vám příjde např:
+- Response would be:
 ```json
 {
   "message": "Short link found",
@@ -89,9 +89,9 @@ dotnet ef database update
 }
 ```
 
-- `originalLinkId` je zkrácený odkaz, který se bude používat na frontendu k redirectutí např: `http://<your-host>/vyrfgl` redirectone na `http://www.example.com`
-## Získání původního odkazu
-- Na tento odkaz methodou GET dostanete tuto odpověď `https://<your-address>/api/LinkCutter/getorignallink/{originalLinkId}`:
+- `originalLinkId` is shortened link, that is used to redirection on frontend for example: `http://<your-host>/vyrfgl` redirects to `http://www.example.com`
+## Getting original link
+- Send GET request on this link, you would get this response `https://<your-address>/api/LinkCutter/getorignallink/{originalLinkId}`:
 ```json
 {
   "message": "Short link found, client can redirect to the original source",
